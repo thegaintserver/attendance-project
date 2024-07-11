@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Form</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body {
+        background-color: #f8f9fa;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .form-container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .form-header {
+        margin-bottom: 20px;
+      }
+      .form-header h1 {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="form-container">
+            <div class="form-header text-center">
+              <h1>Attendance Form</h1>
+            </div>
+            <form id="attendanceForm">
+              <div class="form-group">
+                <label for="student_id">Student ID:</label>
+                <input type="text" class="form-control" id="student_id" name="student_id" required>
+              </div>
+              <div class="form-group">
+                <label for="student_name">Student Name:</label>
+                <input type="text" class="form-control" id="student_name" name="student_name" required>
+              </div>
+              <div class="form-group">
+                <label for="in_date">In Date:</label>
+                <input type="date" class="form-control" id="in_date" name="in_date" required>
+              </div>
+              <div class="form-group">
+                <label for="in_time">In Time:</label>
+                <input type="time" class="form-control" id="in_time" name="in_time" required>
+              </div>
+              <div class="form-group">
+                <label for="out_date">Out Date:</label>
+                <input type="date" class="form-control" id="out_date" name="out_date" required>
+              </div>
+              <div class="form-group">
+                <label for="out_time">Out Time:</label>
+                <input type="time" class="form-control" id="out_time" name="out_time" required>
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      document.getElementById('attendanceForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the form from submitting the default way
+        const form = event.target;
+        const data = new FormData(form);
+        fetch('/submit', {
+          method: 'POST',
+          body: data,
+        })
+        .then(response => response.json())
+        .then(result => {
+          alert(result.message); // Show the popup message
+          if (result.message === "Attendance form submitted successfully!") {
+            form.reset(); // Reset the form if submission was successful
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert("An unexpected error occurred. Please try again.");
+        });
+      });
+    </script>
+  </body>
+</html>
